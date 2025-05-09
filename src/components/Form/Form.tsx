@@ -36,14 +36,14 @@ export default function MainForm() {
             value={title}
             onChange={handleTitleChange}
             className="main-form-input"
-            placeholder="Hello World"
+            placeholder="Your next big idea"
           />
           <span className="main-form-label">Content</span>
           <textarea
             value={content}
             onChange={handleContentChange}
             className="main-form-textarea"
-            placeholder="Content here..."
+            placeholder="Write down your ideas, dreams, and plans..."
           />
           <button
             className={`main-form-button ${isDisabled ? "disabled" : ""}`}
