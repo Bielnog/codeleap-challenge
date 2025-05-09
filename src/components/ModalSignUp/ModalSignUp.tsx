@@ -2,10 +2,13 @@ import Modal from "../Modal/Modal";
 import "./ModalSignUp.scss";
 
 import { useSignUp } from "./ModalSignUp";
+import BaseButton from "../BaseComponents/BaseButton/BaseButton";
+import React from "react";
 
 export default function ModalSignUp() {
   const { name, haveName, handleNameChange, onSubmit } = useSignUp();
 
+  const disabled = React.useMemo(() => !haveName, [haveName]);
   return (
     <Modal>
       <>
@@ -25,13 +28,11 @@ export default function ModalSignUp() {
         </div>
 
         <div className="modal-footer">
-          <button
-            className={`modal-button ${!haveName ? "disabled" : ""}`}
+          <BaseButton
+            disabled={disabled}
             onClick={onSubmit}
-            disabled={!haveName}
-          >
-            ENTER
-          </button>
+            buttonText="ENTER"
+          />
         </div>
       </>
     </Modal>

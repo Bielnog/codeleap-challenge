@@ -1,0 +1,22 @@
+.button.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.button {
+  height: 32px;
+  padding: 5px 35px;
+  background-color: #7695ec;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  overflow: hidden;
+  transition: background-color 0.3s ease-in-out, opacity 0.3s ease;
+  &.disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.8;
+  }
+}

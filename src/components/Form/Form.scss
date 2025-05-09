@@ -4,6 +4,7 @@
   background-color: #fff;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
 }
 
 .main-form-header {
@@ -26,62 +27,4 @@
 
 .form-content {
   padding: 0 24px 24px;
-}
-
-.main-form-label {
-  font-weight: 400;
-  font-size: 16px;
-}
-
-.main-form-input,
-.main-form-textarea {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  margin-bottom: 16px;
-  margin-top: 6px;
-  min-height: 45px;
-  &::placeholder {
-    font-size: 14px;
-    font-weight: 400;
-    opacity: 0.4;
-  }
-}
-
-.main-form-textarea {
-  height: 120px;
-  resize: vertical;
-}
-
-.main-form-button {
-  width: 120px;
-  height: 32px;
-  background-color: #7695ec;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  float: right;
-  font-weight: 600;
-  font-size: 15px;
-}
-
-.main-form-button.disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.main-form-woym {
-  border: 1px solid #999999;
-  border-radius: 16px;
-  padding: 15px;
-  overflow: hidden;
-}
-
-.main-form-woym-text {
-  font-weight: 700;
-  font-size: 22px;
-  margin-top: 5px;
 }
