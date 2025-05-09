@@ -8,14 +8,20 @@ type ModalProps = {
 };
 
 export default function Modal({ show, onClose, children }: ModalProps) {
-  const [visible, setVisible] = useState(show);
+  const [visible, setVisible] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
     if (show) {
       setVisible(true);
-      
+      setTimeout(() => {
+        setIsActive(true);
+      }, 0);
     } else {
-      const timeout = setTimeout(() => setVisible(false), 200);
+      setIsActive(false);
+      const timeout = setTimeout(() => {
+        setVisible(false);
+      }, 200);
       return () => clearTimeout(timeout);
     }
   }, [show]);
@@ -24,11 +30,11 @@ export default function Modal({ show, onClose, children }: ModalProps) {
 
   return (
     <div
-      className={`modal-overlay ${show ? "modal-open" : "modal-closed"}`}
+      className={`modal-overlay ${isActive ? "modal-open" : "modal-closed"}`}
       onClick={onClose}
     >
       <div
-        className={`modal-content ${show ? "modal-open" : "modal-closed"}`}
+        className={`modal-content ${isActive ? "modal-open" : "modal-closed"}`}
         onClick={(e) => e.stopPropagation()}
       >
         {children}
