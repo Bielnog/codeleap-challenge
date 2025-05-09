@@ -1,5 +1,6 @@
-*{
-    box-sizing: border-box;
+* {
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
 }
 html,
 body {
@@ -9,8 +10,8 @@ body {
 }
 
 .modal-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
