@@ -1,6 +1,6 @@
-import BaseButton from "../../../../BaseComponents/BaseButton/BaseButton";
-import BaseModal from "../../../../BaseComponents/BaseModal/BaseModal";
-import "./DeleteModal.scss";
+import BaseButton from "../../../../../BaseComponents/BaseButton/BaseButton";
+import BaseModal from "../../../../../BaseComponents/BaseModal/BaseModal";
+import "../../../../../../styles/DeleteModal.scss";
 
 type DeleteModalProps = {
   show: boolean;

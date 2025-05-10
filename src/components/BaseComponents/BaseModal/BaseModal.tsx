@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
-import "./BaseModal.scss";
+import "../../../styles/BaseModal.scss";
 
 type ModalProps = {
   show: boolean;
   onClose: () => void;
+  onConfirm?: () => void;
   children: React.ReactNode;
 };
 
-export default function Modal({ show, onClose, children }: ModalProps) {
+export default function Modal({
+  show,
+  onClose,
+  onConfirm,
+  children,
+}: ModalProps) {
   const [visible, setVisible] = useState(false);
   const [isActive, setIsActive] = useState(false);
 
@@ -21,7 +27,7 @@ export default function Modal({ show, onClose, children }: ModalProps) {
       setIsActive(false);
       const timeout = setTimeout(() => {
         setVisible(false);
-      }, 200);
+      }, 300);
       return () => clearTimeout(timeout);
     }
   }, [show]);
@@ -38,6 +44,11 @@ export default function Modal({ show, onClose, children }: ModalProps) {
         onClick={(e) => e.stopPropagation()}
       >
         {children}
+        {onConfirm && (
+          <button className="modal-confirm-button" onClick={onConfirm}>
+            Confirm
+          </button>
+        )}
       </div>
     </div>
   );

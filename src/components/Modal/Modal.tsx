@@ -1,4 +1,4 @@
-import "./Modal.scss";
+import "../../styles/Modal.scss";
 
 interface ModalProps {
   children: React.ReactNode;

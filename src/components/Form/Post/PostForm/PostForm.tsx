@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./PostForm.scss";
+import '../../../../styles/PostForm.scss';
 import BaseButton from "../../../BaseComponents/BaseButton/BaseButton";
 
 export default function PostForm() {

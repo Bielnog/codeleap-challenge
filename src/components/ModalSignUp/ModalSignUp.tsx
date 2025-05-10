@@ -1,5 +1,5 @@
 import Modal from "../Modal/Modal";
-import "./ModalSignUp.scss";
+import "../../styles/ModalSignUp.scss";
 
 import { useSignUp } from "./ModalSignUp";
 import BaseButton from "../BaseComponents/BaseButton/BaseButton";

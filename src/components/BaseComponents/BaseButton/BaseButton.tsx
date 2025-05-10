@@ -1,4 +1,4 @@
-import "./BaseButton.scss";
+import "../../../styles/BaseButton.scss";
 
 interface BaseButtonProps {
   disabled?: boolean;

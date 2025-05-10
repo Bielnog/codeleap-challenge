@@ -1,5 +1,5 @@
 import PostForm from "./Post/PostForm/PostForm";
-import "./Form.scss";
+import "../../styles/Form.scss";
 import Post from "./Post/Post";
 
 export default function MainForm() {
