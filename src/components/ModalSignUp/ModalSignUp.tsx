@@ -3,12 +3,26 @@ import "../../styles/ModalSignUp.scss";
 
 import { useSignUp } from "./ModalSignUp";
 import BaseButton from "../BaseComponents/BaseButton/BaseButton";
-import React from "react";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ModalSignUp() {
   const { name, haveName, handleNameChange, onSubmit } = useSignUp();
+  const [disabled, setDisabled] = useState(true);
 
-  const disabled = React.useMemo(() => !haveName, [haveName]);
+  useEffect(() => {
+    const updateDisabledState = async () => {
+      try {
+        await AsyncStorage.setItem("haveName", JSON.stringify(haveName));
+        setDisabled(!haveName);
+      } catch (error) {
+        console.error("Error saving to AsyncStorage", error);
+      }
+    };
+
+    updateDisabledState();
+  }, [haveName]);
+
   return (
     <Modal>
       <>

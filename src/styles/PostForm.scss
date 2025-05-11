@@ -3,17 +3,28 @@
   border-radius: 16px;
   padding: 15px;
   overflow: hidden;
+
+  &.edit-mode {
+    border: none;
+    padding: 5px 5px;
+    .main-form-textarea {
+      height: 74px;
+      max-height: 500px;
+    }
+  }
 }
 
 .main-form-woym-text {
   font-weight: 700;
   font-size: 22px;
   margin-top: 5px;
+  color: #000;
 }
 
 .main-form-label {
   font-weight: 400;
   font-size: 16px;
+  color: #000;
 }
 
 .main-form-input,
@@ -22,10 +33,10 @@
   padding: 10px;
   border-radius: 8px;
   border: 1px solid #ccc;
-  font-size: 1rem;
   margin-bottom: 16px;
   margin-top: 6px;
-  min-height: 45px;
+  min-height: 40px;
+  outline: none;
 
   &::placeholder {
     font-size: 14px;
@@ -42,4 +53,5 @@
 .main-form-button-container {
   display: flex;
   justify-content: flex-end;
+  gap: 10px;
 }

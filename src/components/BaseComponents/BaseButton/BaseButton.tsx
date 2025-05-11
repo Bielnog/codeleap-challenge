@@ -2,6 +2,7 @@ import "../../../styles/BaseButton.scss";
 
 interface BaseButtonProps {
   disabled?: boolean;
+  show?: boolean;
   onClick: () => void;
   buttonText?: React.ReactNode;
   buttonColor?: string;
@@ -15,6 +16,7 @@ export default function BaseButton({
   buttonColor,
   buttonTextColor,
   haveBorder = false,
+  show = true,
 }: BaseButtonProps) {
   return (
     <button
@@ -25,6 +27,7 @@ export default function BaseButton({
         backgroundColor: disabled ? "#ccc" : buttonColor || "#7695ec",
         color: buttonTextColor,
         border: haveBorder ? "1px solid #999999" : "none",
+        display: show ? "block" : "none",
       }}
     >
       {buttonText}

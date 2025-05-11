@@ -11,7 +11,6 @@ type ModalProps = {
 export default function Modal({
   show,
   onClose,
-  onConfirm,
   children,
 }: ModalProps) {
   const [visible, setVisible] = useState(false);
@@ -27,7 +26,7 @@ export default function Modal({
       setIsActive(false);
       const timeout = setTimeout(() => {
         setVisible(false);
-      }, 300);
+      }, 200);
       return () => clearTimeout(timeout);
     }
   }, [show]);
@@ -44,11 +43,6 @@ export default function Modal({
         onClick={(e) => e.stopPropagation()}
       >
         {children}
-        {onConfirm && (
-          <button className="modal-confirm-button" onClick={onConfirm}>
-            Confirm
-          </button>
-        )}
       </div>
     </div>
   );

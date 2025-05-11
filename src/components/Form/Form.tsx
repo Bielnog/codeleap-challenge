@@ -1,8 +1,91 @@
 import PostForm from "./Post/PostForm/PostForm";
 import "../../styles/Form.scss";
 import Post from "./Post/Post";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
+import { api } from "../../utils/apiAccess";
+
+interface PostData {
+  id: string;
+  title: string;
+  content: string;
+  username: string;
+  created_datetime: string;
+}
 
 export default function MainForm() {
+  const [author, setAuthor] = useState("");
+  const [posts, setPosts] = useState<PostData[]>([]);
+
+  useEffect(() => {
+    const fetchUsername = async () => {
+      const username = await AsyncStorage.getItem("username");
+      if (username) {
+        setAuthor(username);
+      }
+    };
+    fetchUsername();
+  }, []);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const posts = await api.getPosts();
+        const sortedPosts = posts.sort(
+          (a, b) =>
+            new Date(b.created_datetime).getTime() -
+            new Date(a.created_datetime).getTime()
+        );
+        const formattedPosts = sortedPosts.map((post) => ({
+          id: post.id.toString(),
+          title: post.title,
+          content: post.content,
+          username: post.username,
+          created_datetime: post.created_datetime,
+        }));
+        setPosts(formattedPosts);
+      } catch (error) {
+        console.error("Error fetching posts: ", error);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
+  const handlePostSubmit = async (title: string, content: string) => {
+    try {
+      const newPost = await api.createPost({
+        username: author,
+        title,
+        content,
+      });
+
+      setPosts((prevPosts) => [
+        {
+          ...newPost,
+          id: newPost.id.toString(),
+        },
+        ...prevPosts,
+      ]);
+    } catch (error) {
+      console.error("Error creating post:", error);
+    }
+  };
+
+  const refreshPosts = async () => {
+    try {
+      const updatedPosts = await api.getPosts();
+      setPosts(
+        updatedPosts.map((post) => ({
+          ...post,
+          id: post.id.toString(),
+        }))
+      );
+    } catch (error) {
+      console.error("Error refreshing posts:", error);
+    }
+  };
+
   return (
     <div className="main-form-container">
       <div className="main-form-header">
@@ -10,14 +93,20 @@ export default function MainForm() {
       </div>
 
       <div className="form-content">
-        <PostForm />
+        <PostForm onCreatePost={handlePostSubmit} username={author} />
         <br />
-        <Post
-          title="My First Post"
-          content="This is the content of my first post."
-          author="JohnDoe"
-          timestamp={`${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`}
-        />
+        {posts.map((post, index) => (
+          <Post
+            key={index}
+            id={post.id}
+            title={post.title}
+            content={post.content}
+            author={post.username}
+            timestamp={post.created_datetime}
+            onEdit={refreshPosts}
+            onDelete={refreshPosts}
+          />
+        ))}
       </div>
     </div>
   );

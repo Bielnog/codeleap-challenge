@@ -3,22 +3,27 @@ import "./App.scss";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import SignUp from "./pages/SignUp/SignUp";
 import MainPage from "./pages/MainPage/MainPage";
+import getUsername from "./utils/getUsername";
 
 function App() {
-  const isLoggedIn = localStorage.getItem("username");
+  const isLoggedIn = getUsername();
 
   return (
     <BrowserRouter>
       <Routes>
         <Route
-          path="/"
+          path="/codeleap-challenge"
           element={
-            isLoggedIn ? <Navigate to="/main" /> : <Navigate to="/login" />
+            isLoggedIn ? (
+              <Navigate to="/codeleap-challenge/main" />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
-        <Route path="/login" element={<SignUp />} />
+        <Route path="/codeleap-challenge/login" element={<SignUp />} />
         <Route
-          path="/main"
+          path="/codeleap-challenge/main"
           element={isLoggedIn ? <MainPage /> : <Navigate to="/login" />}
         />
       </Routes>
