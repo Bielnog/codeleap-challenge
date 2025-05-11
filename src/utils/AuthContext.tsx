@@ -1,52 +1,60 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getUsername, setUsername as saveUsername } from "../utils/username";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { auth } from "../firebase";
+import {
+  onAuthStateChanged,
+  signInAnonymously,
+  signOut,
+  updateProfile,
+  type User,
+} from "firebase/auth";
+import { loginWithUsername, signInWithCredentials } from "./loginWithUsername";
 
 interface AuthContextType {
-  isLoggedIn: boolean;
-  username: string | null;
-  login: (username: string) => Promise<void>;
+  user: User | null;
+  loading: boolean;
+  login: (email: string, password: string, username?: string) => Promise<void>;
+  loginAsGuest: (username: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextType>({
-  isLoggedIn: false,
-  username: null,
-  login: async () => {},
-  logout: async () => {},
-});
+const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [username, setUsernameState] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadUsername = async () => {
-      const stored = await getUsername();
-      if (stored) {
-        setUsernameState(stored);
-      }
-    };
-    loadUsername();
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+      setLoading(false);
+    });
+    return () => unsubscribe();
   }, []);
 
-  const login = async (newUsername: string) => {
-    await saveUsername(newUsername);
-    setUsernameState(newUsername);
+  const login = async (email: string, password: string, username?: string) => {
+    if (username) {
+      const user = await loginWithUsername(email, password, username);
+      setUser(user);
+    } else {
+      const user = await signInWithCredentials(email, password);
+      setUser(user);
+    }
+  };
+
+  const loginAsGuest = async (username: string) => {
+    const credential = await signInAnonymously(auth);
+    await updateProfile(credential.user, { displayName: username });
+    setUser(credential.user);
   };
 
   const logout = async () => {
-    await AsyncStorage.removeItem("username");
-    setUsernameState(null);
+    await signOut(auth);
+    setUser(null);
   };
 
   return (
     <AuthContext.Provider
-      value={{
-        isLoggedIn: !!username,
-        username,
-        login,
-        logout,
-      }}
+      value={{ user, loading, login, loginAsGuest, logout }}
     >
       {children}
     </AuthContext.Provider>

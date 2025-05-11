@@ -1,5 +1,5 @@
 .modal {
-  height: 205px;
+  height: fit-content;
 
   &-title {
     font-size: 22px;
@@ -9,9 +9,15 @@
 
 .modal-body {
   .modal-text {
+    display: flex;
+    align-items: center;
     margin: 10px 0 8px;
     font-size: 16px;
     font-weight: 400;
+    span {
+      display: inline-flex;
+      margin-left: 8px;
+    }
   }
 
   .modal-input {
@@ -29,4 +35,30 @@
       opacity: 0.4;
     }
   }
+}
+
+.switch-mode {
+  color: #666;
+
+  span {
+    color: #007bff;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.error-message {
+  color: #dc3545;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: #ffe6e6;
+  border-radius: 4px;
 }
