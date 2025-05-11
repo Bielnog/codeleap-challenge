@@ -1,4 +1,4 @@
-import getUsername from "../../../../../../utils/getUsername";
+import { getUsername } from "../../../../../../utils/username";
 import BaseModal from "../../../../../BaseComponents/BaseModal/BaseModal";
 import PostForm from "../../PostForm";
 import { useEffect, useState } from "react";
@@ -28,7 +28,11 @@ export default function EditModal({
     }
   }, [show, initialTitle, initialContent]);
 
-  const username = getUsername();
+  const [username, setUsername] = useState<string | null>(null);
+
+  useEffect(() => {
+    getUsername().then((name) => setUsername(name));
+  }, []);
 
   return (
     <BaseModal
@@ -39,7 +43,7 @@ export default function EditModal({
       <PostForm
         isEdit={true}
         headerText="Edit item"
-        username={username}
+        username={username || ""}
         onEditPost={onConfirm}
         onCancel={onCancel}
         initialTitle={initialTitle}

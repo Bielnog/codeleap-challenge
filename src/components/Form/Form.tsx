@@ -2,8 +2,11 @@ import PostForm from "./Post/PostForm/PostForm";
 import "../../styles/Form.scss";
 import Post from "./Post/Post";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { api } from "../../utils/apiAccess";
+import { MdOutlineLogout } from "react-icons/md";
+import { useAuth } from "../../utils/AuthContext";
 
 interface PostData {
   id: string;
@@ -14,6 +17,18 @@ interface PostData {
 }
 
 export default function MainForm() {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/codeleap-challenge/login");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
   const [author, setAuthor] = useState("");
   const [posts, setPosts] = useState<PostData[]>([]);
 
@@ -90,14 +105,17 @@ export default function MainForm() {
     <div className="main-form-container">
       <div className="main-form-header">
         <span className="title">CodeLeap Network</span>
+        {author && (
+          <MdOutlineLogout onClick={handleLogout} className="logout-button" />
+        )}
       </div>
 
       <div className="form-content">
         <PostForm onCreatePost={handlePostSubmit} username={author} />
         <br />
-        {posts.map((post, index) => (
+        {posts.map((post) => (
           <Post
-            key={index}
+            key={post.id}
             id={post.id}
             title={post.title}
             content={post.content}
@@ -105,6 +123,7 @@ export default function MainForm() {
             timestamp={post.created_datetime}
             onEdit={refreshPosts}
             onDelete={refreshPosts}
+            currentUser={author}
           />
         ))}
       </div>

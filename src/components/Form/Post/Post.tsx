@@ -14,6 +14,7 @@ interface PostProps {
   timestamp: string;
   onEdit?: () => void;
   onDelete?: () => void;
+  currentUser?: string;
 }
 
 export default function Post({
@@ -24,6 +25,7 @@ export default function Post({
   timestamp,
   onEdit,
   onDelete,
+  currentUser,
 }: PostProps) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -56,28 +58,30 @@ export default function Post({
     <div className="post-container">
       <div className="post-header">
         <span className="post-title">{title}</span>
-        <div className="post-actions">
-          <FaTrash
-            className="post-icon"
-            onClick={() => setIsDeleteModalOpen(true)}
-          />
-          <DeleteModal
-            show={isDeleteModalOpen}
-            onCancel={() => setIsDeleteModalOpen(false)}
-            onConfirm={handleDelete}
-          />
-          <FaEdit
-            className="post-icon"
-            onClick={() => setIsEditModalOpen(true)}
-          />
-          <EditModal
-            show={isEditModalOpen}
-            onCancel={() => setIsEditModalOpen(false)}
-            onConfirm={handleEdit}
-            initialTitle={title}
-            initialContent={content}
-          />
-        </div>
+        {currentUser === author && (
+          <div className="post-actions">
+            <FaTrash
+              className="post-icon"
+              onClick={() => setIsDeleteModalOpen(true)}
+            />
+            <DeleteModal
+              show={isDeleteModalOpen}
+              onCancel={() => setIsDeleteModalOpen(false)}
+              onConfirm={handleDelete}
+            />
+            <FaEdit
+              className="post-icon"
+              onClick={() => setIsEditModalOpen(true)}
+            />
+            <EditModal
+              show={isEditModalOpen}
+              onCancel={() => setIsEditModalOpen(false)}
+              onConfirm={handleEdit}
+              initialTitle={title}
+              initialContent={content}
+            />
+          </div>
+        )}
       </div>
 
       <div className="post-meta">

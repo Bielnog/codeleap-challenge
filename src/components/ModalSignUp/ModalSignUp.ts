@@ -1,24 +1,24 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 
 export function useSignUp() {
-    const [name, setName] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const haveName: boolean = name.trim().length > 0;
 
-    const haveName: boolean = name.trim().length > 0;
+  function handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setName(event.target.value);
+  }
 
-    function handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
-        setName(event.target.value);
-    }
+  function onSubmit() {
+    if (!haveName) return false;
+    AsyncStorage.setItem("username", name);
+    return true;
+  }
 
-    function onSubmit() {
-        if (!haveName) return;
-        localStorage.setItem("username", name);
-        window.location.reload();
-    }
-
-    return {
-        name,
-        haveName,
-        handleNameChange,
-        onSubmit,
-    }
+  return {
+    name,
+    haveName,
+    handleNameChange,
+    onSubmit,
+  };
 }
