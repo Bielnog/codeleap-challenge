@@ -106,7 +106,7 @@ export default function ModalSignUp() {
         <Tooltip id="password-tooltip" place="right" />
       </div>
 
-      <div className="modal-footer">
+      <div className="modal-footer-signup">
         <BaseButton
           disabled={!formIsValid}
           onClick={handleSubmit}

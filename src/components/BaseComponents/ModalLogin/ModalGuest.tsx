@@ -23,24 +23,26 @@ export default function ModalGuest() {
       const usersRef = collection(db, "users");
       const q = query(usersRef, where("username", "==", username));
       const snapshot = await getDocs(q);
-      
+
       if (!snapshot.empty) {
         throw new Error("Username already taken");
       }
 
       const credential = await signInAnonymously(auth);
-      
+
       await updateProfile(credential.user, { displayName: username });
       await addDoc(usersRef, {
         uid: credential.user.uid,
         username,
         isAnonymous: true,
-        createdAt: new Date()
+        createdAt: new Date(),
       });
 
       navigate("/codeleap-challenge/main");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create guest account");
+      setError(
+        err instanceof Error ? err.message : "Failed to create guest account"
+      );
     }
   };
 
@@ -63,14 +65,17 @@ export default function ModalGuest() {
       </div>
 
       <div className="modal-footer">
+        <p className="switch-mode">
+          Already have account?{" "}
+          <span onClick={() => navigate("/codeleap-challenge/login")}>
+            Login
+          </span>
+        </p>
         <BaseButton
           onClick={handleGuestLogin}
           buttonText="CONTINUE"
           disabled={!username.trim()}
         />
-        <p className="switch-mode">
-          Already have account? <span onClick={() => navigate("/codeleap-challenge/login")}>Login</span>
-        </p>
       </div>
     </Modal>
   );

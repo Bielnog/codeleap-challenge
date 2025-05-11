@@ -1,18 +1,20 @@
 const API_URL = "https://dev.codeleap.co.uk/careers/";
 
+interface Post {
+  id: string;
+  username: string;
+  title: string;
+  content: string;
+  created_datetime: string;
+}
 interface PostData {
   username: string;
   title: string;
   content: string;
 }
 
-interface PostResponse extends PostData {
-  id: number;
-  created_datetime: string;
-}
-
 export const api = {
-  async createPost(post: PostData): Promise<PostResponse> {
+  async createPost(post: PostData): Promise<Post> {
     try {
       const response = await fetch(API_URL, {
         method: "POST",
@@ -34,7 +36,7 @@ export const api = {
     }
   },
 
-  async getPosts(): Promise<PostResponse[]> {
+  async getPosts(): Promise<Post[]> {
     try {
       const response = await fetch(API_URL);
 
@@ -51,7 +53,7 @@ export const api = {
     }
   },
 
-  async updatePost(id: string, post: Partial<PostData>): Promise<PostResponse> {
+  async updatePost(id: string, post: Partial<PostData>): Promise<Post> {
     try {
       const response = await fetch(`${API_URL}${id}/`, {
         method: "PATCH",

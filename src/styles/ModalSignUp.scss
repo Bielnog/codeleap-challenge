@@ -55,6 +55,12 @@
   align-items: center;
 }
 
+.modal-footer-signup {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
 .error-message {
   color: #dc3545;
   margin-bottom: 15px;

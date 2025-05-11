@@ -75,13 +75,7 @@ export default function MainForm() {
         content,
       });
 
-      setPosts((prevPosts) => [
-        {
-          ...newPost,
-          id: newPost.id.toString(),
-        },
-        ...prevPosts,
-      ]);
+      setPosts((prevPosts) => [newPost, ...prevPosts]);
     } catch (error) {
       console.error("Error creating post:", error);
     }
