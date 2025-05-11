@@ -38,7 +38,7 @@ export default function ModalGuest() {
         createdAt: new Date(),
       });
 
-      navigate("/codeleap-challenge/main");
+      navigate("/main");
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Failed to create guest account"
@@ -67,7 +67,7 @@ export default function ModalGuest() {
       <div className="modal-footer">
         <p className="switch-mode">
           Already have account?{" "}
-          <span onClick={() => navigate("/codeleap-challenge/login")}>
+          <span onClick={() => navigate("/login")}>
             Login
           </span>
         </p>

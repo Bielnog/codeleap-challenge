@@ -27,7 +27,7 @@ export default function ModalSignUp() {
     
     try {
       await login(email, password, username);
-      navigate("/codeleap-challenge/main", { replace: true });
+      navigate("/main", { replace: true });
     } catch (err) {
       let errorMessage = "An unknown error occurred";
       

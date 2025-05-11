@@ -16,59 +16,39 @@ function RoutesWithAuth() {
   return (
     <Routes>
       <Route
-        path="/codeleap-challenge"
+        path="/"
         element={
-          user ? (
-            <Navigate to="/codeleap-challenge/main" replace />
-          ) : (
-            <Navigate to="/codeleap-challenge/login" replace />
-          )
+          user ? <Navigate to="/main" replace /> : <Navigate to="/login" replace />
         }
       />
 
       <Route
-        path="/codeleap-challenge/login"
+        path="/login"
         element={
-          user ? (
-            <Navigate to="/codeleap-challenge/main" replace />
-          ) : (
-            <ModalLogin />
-          )
+          user ? <Navigate to="/main" replace /> : <ModalLogin />
         }
       />
       <Route
-        path="/codeleap-challenge/signup"
+        path="/signup"
         element={
-          user ? (
-            <Navigate to="/codeleap-challenge/main" replace />
-          ) : (
-            <ModalSignUp />
-          )
+          user ? <Navigate to="/main" replace /> : <ModalSignUp />
         }
       />
       <Route
-        path="/codeleap-challenge/guest"
+        path="/guest"
         element={
-          user ? (
-            <Navigate to="/codeleap-challenge/main" replace />
-          ) : (
-            <ModalGuest />
-          )
+          user ? <Navigate to="/main" replace /> : <ModalGuest />
         }
       />
 
       <Route
-        path="/codeleap-challenge/main"
+        path="/main"
         element={
-          user ? (
-            <MainPage />
-          ) : (
-            <Navigate to="/codeleap-challenge/login" replace />
-          )
+          user ? <MainPage /> : <Navigate to="/login" replace />
         }
       />
 
-      <Route path="*" element={<Navigate to="/codeleap-challenge" replace />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

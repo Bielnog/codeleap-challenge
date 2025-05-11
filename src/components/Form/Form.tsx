@@ -23,7 +23,7 @@ export default function MainForm() {
   const handleLogout = async () => {
     try {
       await logout();
-      navigate("/codeleap-challenge/login");
+      navigate("/login");
     } catch (error) {
       console.error("Error logging out:", error);
     }

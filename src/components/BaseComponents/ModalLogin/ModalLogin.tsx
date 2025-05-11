@@ -15,7 +15,7 @@ export default function ModalLogin() {
   const handleLogin = async () => {
     try {
       await login(email, password);
-      navigate("/codeleap-challenge/main");
+      navigate("/main");
     } catch (err) {
       let message = "Login failed";
       if (err instanceof Error) {
@@ -75,12 +75,12 @@ export default function ModalLogin() {
       <div className="modal-footer">
         <p className="switch-mode">
           New user?{" "}
-          <span onClick={() => navigate("/codeleap-challenge/signup")}>
+          <span onClick={() => navigate("/signup")}>
             Sign up
           </span>
           <br />
           or
-          <span onClick={() => navigate("/codeleap-challenge/guest")}>
+          <span onClick={() => navigate("/guest")}>
             {" "}Continue as Guest
           </span>
         </p>
