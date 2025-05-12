@@ -105,7 +105,6 @@ CodeLeap Network is a React application where users can create, read, update, an
 │   ├── firebase.ts
 │   ├── hooks
 │   │   └── usePosts.ts
-│   ├── index.scss
 │   ├── main.tsx
 │   ├── pages
 │   │   ├── MainPage
