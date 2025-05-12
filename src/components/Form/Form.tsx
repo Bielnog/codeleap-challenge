@@ -11,7 +11,7 @@ import type { PostData } from "../../types/Post";
 export default function MainForm() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const { posts } = usePosts();
+  const { posts, refreshPosts } = usePosts();
 
   const handleLogout = async () => {
     try {
@@ -33,10 +33,14 @@ export default function MainForm() {
       };
 
       await api.createPost(postData);
+      await refreshPosts();
     } catch (error) {
       console.error("Error creating post:", error);
       throw error;
     }
+  };
+  const handlePostUpdate = async () => {
+    await refreshPosts();
   };
 
   return (
@@ -68,6 +72,8 @@ export default function MainForm() {
               author={post.username}
               timestamp={post.created_datetime}
               username={user?.displayName || ""}
+              onEdit={handlePostUpdate}
+              onDelete={handlePostUpdate}
             />
           ))}
         </div>
