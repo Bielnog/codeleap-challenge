@@ -1,4 +1,3 @@
-// ModalGuest.tsx
 import Modal from "../../Modal/Modal";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
