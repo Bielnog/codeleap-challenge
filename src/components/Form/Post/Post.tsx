@@ -1,20 +1,20 @@
 import "../../../styles/Post.scss";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import DeleteModal from "./PostForm/Modals/DeleteModal/DeleteModal";
-import EditModal from "./PostForm/Modals/EditModal/EditModal";
+import DeleteModal from "../../BaseComponents/Modals/DeleteModal/DeleteModal";
+import EditModal from "../../BaseComponents/Modals/EditModal/EditModal";
 import { useState } from "react";
 import { api } from "../../../utils/apiAccess";
 import { formatDistanceToNow, parseISO } from "date-fns";
 
 interface PostProps {
-  id: string;
+  id: number;
   title: string;
   content: string;
   author: string;
   timestamp: string;
+  username?: string;
   onEdit?: () => void;
   onDelete?: () => void;
-  currentUser?: string;
 }
 
 export default function Post({
@@ -25,14 +25,14 @@ export default function Post({
   timestamp,
   onEdit,
   onDelete,
-  currentUser,
+  username,
 }: PostProps) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const handleDelete = async () => {
     try {
-      await api.deletePost(`${id}`);
+      await api.deletePost(id);
       setIsDeleteModalOpen(false);
       onDelete?.();
     } catch (error) {
@@ -58,7 +58,7 @@ export default function Post({
     <div className="post-container">
       <div className="post-header">
         <span className="post-title">{title}</span>
-        {currentUser === author && (
+        {username === author && (
           <div className="post-actions">
             <FaTrash
               className="post-icon"

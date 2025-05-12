@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "../../../../styles/PostForm.scss";
 import BaseButton from "../../../BaseComponents/BaseButton/BaseButton";
+import { useAuth } from "../../../../utils/AuthContext";
 
 type PostFormProps = {
   username: string;
@@ -40,8 +41,10 @@ export default function PostForm({
 
   const isDisabled = !title.trim() || !content.trim();
 
+  const { user } = useAuth();
+
   const handleSubmit = async () => {
-    if (isDisabled) return;
+    if (isDisabled || !user) return;
 
     try {
       if (isEdit && onEditPost) {

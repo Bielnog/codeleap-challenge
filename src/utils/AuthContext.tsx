@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
+import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
 import {
   onAuthStateChanged,
   signInAnonymously,
@@ -9,13 +10,7 @@ import {
 } from "firebase/auth";
 import { loginWithUsername, signInWithCredentials } from "./loginWithUsername";
 
-interface AuthContextType {
-  user: User | null;
-  loading: boolean;
-  login: (email: string, password: string, username?: string) => Promise<void>;
-  loginAsGuest: (username: string) => Promise<void>;
-  logout: () => Promise<void>;
-}
+import type { AuthContextType } from "../types/AuthContext";
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
@@ -42,8 +37,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const loginAsGuest = async (username: string) => {
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("username", "==", username));
+    const snapshot = await getDocs(q);
+
+    if (!snapshot.empty) {
+      throw new Error("Username already taken");
+    }
+
     const credential = await signInAnonymously(auth);
+
     await updateProfile(credential.user, { displayName: username });
+    await addDoc(usersRef, {
+      uid: credential.user.uid,
+      username,
+      isAnonymous: true,
+      createdAt: new Date(),
+    });
+
     setUser(credential.user);
   };
 

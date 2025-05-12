@@ -23,12 +23,14 @@ export async function loginWithUsername(
   username: string
 ): Promise<User> {
   const usersRef = collection(db, "users");
-  const q = query(usersRef, where("username", "==", username));
-  const existing = await getDocs(q);
 
-  if (!existing.empty) {
-    throw new Error("Username already exists");
-  }
+  const usernameQuery = query(usersRef, where("username", "==", username));
+  const usernameSnapshot = await getDocs(usernameQuery);
+  if (!usernameSnapshot.empty) throw new Error("Username already exists");
+
+  const emailQuery = query(usersRef, where("email", "==", email));
+  const emailSnapshot = await getDocs(emailQuery);
+  if (!emailSnapshot.empty) throw new Error("Email already registered");
 
   const credential = await createUserWithEmailAndPassword(
     auth,

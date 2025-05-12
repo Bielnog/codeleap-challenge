@@ -1,97 +1,41 @@
 import PostForm from "./Post/PostForm/PostForm";
 import "../../styles/Form.scss";
 import Post from "./Post/Post";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { api } from "../../utils/apiAccess";
+import { usePosts } from "../../hooks/usePosts";
 import { MdOutlineLogout } from "react-icons/md";
 import { useAuth } from "../../utils/AuthContext";
-
-interface PostData {
-  id: string;
-  title: string;
-  content: string;
-  username: string;
-  created_datetime: string;
-}
+import { api } from "../../utils/apiAccess";
+import type { PostData } from "../../types/Post";
 
 export default function MainForm() {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
+  const { posts } = usePosts();
 
   const handleLogout = async () => {
     try {
       await logout();
-      navigate("/login");
+      navigate("/codeleap-challenge/login");
     } catch (error) {
       console.error("Error logging out:", error);
     }
   };
 
-  const [author, setAuthor] = useState("");
-  const [posts, setPosts] = useState<PostData[]>([]);
-
-  useEffect(() => {
-    const fetchUsername = async () => {
-      const username = await AsyncStorage.getItem("username");
-      if (username) {
-        setAuthor(username);
-      }
-    };
-    fetchUsername();
-  }, []);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const posts = await api.getPosts();
-        const sortedPosts = posts.sort(
-          (a, b) =>
-            new Date(b.created_datetime).getTime() -
-            new Date(a.created_datetime).getTime()
-        );
-        const formattedPosts = sortedPosts.map((post) => ({
-          id: post.id.toString(),
-          title: post.title,
-          content: post.content,
-          username: post.username,
-          created_datetime: post.created_datetime,
-        }));
-        setPosts(formattedPosts);
-      } catch (error) {
-        console.error("Error fetching posts: ", error);
-      }
-    };
-
-    fetchPosts();
-  }, []);
-
   const handlePostSubmit = async (title: string, content: string) => {
+    if (!user) return;
+
     try {
-      const newPost = await api.createPost({
-        username: author,
+      const postData: PostData = {
         title,
         content,
-      });
+        username: user.displayName || "Anonymous",
+      };
 
-      setPosts((prevPosts) => [newPost, ...prevPosts]);
+      await api.createPost(postData);
     } catch (error) {
       console.error("Error creating post:", error);
-    }
-  };
-
-  const refreshPosts = async () => {
-    try {
-      const updatedPosts = await api.getPosts();
-      setPosts(
-        updatedPosts.map((post) => ({
-          ...post,
-          id: post.id.toString(),
-        }))
-      );
-    } catch (error) {
-      console.error("Error refreshing posts:", error);
+      throw error;
     }
   };
 
@@ -99,27 +43,34 @@ export default function MainForm() {
     <div className="main-form-container">
       <div className="main-form-header">
         <span className="title">CodeLeap Network</span>
-        {author && (
-          <MdOutlineLogout onClick={handleLogout} className="logout-button" />
+        {user && (
+          <MdOutlineLogout
+            onClick={handleLogout}
+            className="logout-button"
+            title="Logout"
+          />
         )}
       </div>
 
       <div className="form-content">
-        <PostForm onCreatePost={handlePostSubmit} username={author} />
+        <PostForm
+          onCreatePost={handlePostSubmit}
+          username={user?.displayName || ""}
+        />
         <br />
-        {posts.map((post) => (
-          <Post
-            key={post.id}
-            id={post.id}
-            title={post.title}
-            content={post.content}
-            author={post.username}
-            timestamp={post.created_datetime}
-            onEdit={refreshPosts}
-            onDelete={refreshPosts}
-            currentUser={author}
-          />
-        ))}
+        <div className="posts-list">
+          {posts.map((post) => (
+            <Post
+              key={post.id}
+              id={post.id}
+              title={post.title}
+              content={post.content}
+              author={post.username}
+              timestamp={post.created_datetime}
+              username={user?.displayName || ""}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
