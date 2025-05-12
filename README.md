@@ -1,7 +1,7 @@
 # CodeLeap Network
 
-**Deployed on:** Vercel
-[https://codeleap-challenge-theta.vercel.app/](https://codeleap-challenge-theta.vercel.app/)
+**Deployed on:** Vercel  
+**Live Demo:** [https://codeleap-challenge-theta.vercel.app/](https://codeleap-challenge-theta.vercel.app/)  
 **Author:** Gabriel Nogueira
 
 > **Note:** This repository contains the solution to the CodeLeap Challenge, completed as part of the application process for a **Junior Frontend Engineer** position.
